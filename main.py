@@ -3,14 +3,15 @@ import random
 import time
 
 def main():
+    num_bots = 3
     try:
         while not (username := input("Enter your name: ").strip()):
             continue
-        names = [username, "bot1", "bot2", "bot3"]
+        names = [username].extend([f"bot{i}" for i in range(1, num_bots + 1)])
     except (EOFError, KeyboardInterrupt):
         return
 
-    states = [False, True, True, True]
+    states = [False].extend([True for _ in range(1, num_bots + 1)])
     users = [cards.User(name, state, cards.applied_deck) for name, state in zip(names, states)]
     table = cards.Table(cards.applied_deck)
 
