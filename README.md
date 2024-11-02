@@ -15,3 +15,5 @@ cn (where c is a "color" letter such as yellow, and n is a "number" or "tool" le
 for example: yr will convert to yellow_reverse, b4 to blue_4, rr to red_reverse, and gs to green_skip.
 
 it is you against the bots (there are 3 bots, but you can customize the number of bots in the source code by adjusting the "num_bots" variable).
+
+Also, for the notation you see in "(x) table: [card]" or "(x) user's turn", x is the number of cards an entity holds, e.g the table or a user.
