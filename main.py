@@ -7,11 +7,11 @@ def main():
     try:
         while not (username := input("Enter your name: ").strip()):
             continue
-        names = [username].extend([f"bot{i}" for i in range(1, num_bots + 1)])
+        names = [username].extend([f"bot{i + 1}" for i in range(num_bots)])
     except (EOFError, KeyboardInterrupt):
         return
 
-    states = [False].extend([True for _ in range(1, num_bots + 1)])
+    states = [False].extend([True for _ in range(num_bots)])
     users = [cards.User(name, state, cards.applied_deck) for name, state in zip(names, states)]
     table = cards.Table(cards.applied_deck)
 
