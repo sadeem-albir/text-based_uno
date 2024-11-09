@@ -1,19 +1,50 @@
-# text-based_uno
-Text-based Uno card game
+commands: "put", "draw", "hand", "tb", "tb_full", "cheat"
 
-How to play:
+for all the commands except "put" and "cheat", you just enter
+the command.
 
-put the two files, "main.py" and "cards.py" in the same folder, then run "python main.py" in that folder from the terminal.
+for "put", you can either type "put" followed by the card name,
+or type "put", press enter, then be prompted to type the card name.
 
-After entering your name, when it's your turn, you have a bunch of commands you can call (listed in the start of the game).
-When using the "put" command, you can either type the numeric location of your card, the literal card name, or a short-hand
-notation of the card name in the form of:
-w (for wild)
-wd (for wild_draw4)
-cn (where c is a "color" letter such as yellow, and n is a "number" or "tool" letter, such as 3 or reverse)
+The card name can have one of three forms: the full card name
+exactly as it is, an index number from the list of cards you own,
+or a shortcut name for the card.
 
-for example: yr will convert to yellow_reverse, b4 to blue_4, rr to red_reverse, and gs to green_skip.
+For the index:
+if this is your hand
 
-it is you against the bots (there are 3 bots, but you can customize the number of bots in the source code by adjusting the "num_bots" variable).
+    [green_0, wild, wild_draw4, red_draw2, blue_skip]
 
-Also, for the notation you see in "(x) table: [card]" or "(x) user's turn", x is the number of cards an entity holds, e.g the table or a user.
+and you wanted to put red_draw2, you type
+
+    put 4
+
+for the full card name, you type
+
+    put red_draw2
+
+and for the shortcut, you type
+
+    put rd
+
+Here are some shortcut annotations:
+    normal color card: first letter + card number,
+    e.g yellow_2 -> y2, blue_0 -> b0, etc.
+
+    action cards: first letter of color + first letter of action,
+    e.g yellow_reverse -> yr, red_skip -> rs, blue_draw2 -> bd, etc.
+
+    wild cards:
+    wild -> w, wild_draw2 -> wd
+
+for the "cheat" command, you type "cheat" followed by the name of
+one of the players to "peak" at their hand. For example, if you're
+playing with bot1, bot2, and bot3, typing "cheat bot3" will show
+you bot3's cards.
+
+Finally, in the source code of main.py, you can change the number of
+players in the game by changing the "num_bots" variable, and if you
+want to watch the bots play against each other, set "bot_exclusive"
+to True.
+
+To run the game, type "python main.py" in the directory where the files reside.
