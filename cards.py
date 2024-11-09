@@ -4,16 +4,9 @@ class User:
     def __init__(self, name, user_state, target_deck):
         self.name = name
         self.stack = [target_deck.pop() for _ in range(7)]
-        self.commands = ["put", "draw", "hand", "tb", "tb_full"]
+        self.commands = ["put", "draw", "hand", "tb", "tb_full", "cheat"]
         # self.debug_commands = ["userhand", ""]
         self.is_bot = user_state
-        self.troll_msg = [
-            "and apparently sucks at this game",
-            "and still apparently sucks at this game",
-            "and I'm wondering when they'll improve",
-            "ok I feel bad... sike, they still suck!"
-        ]
-        self.next_msg = 0
 
     def format_card(self, card):
         color_fmt = {
@@ -22,7 +15,7 @@ class User:
             "b": "blue",
             "y": "yellow",
             "w": "wild",
-            "w4": "wild_draw4"
+            "wd": "wild_draw4"
         }
         number_fmt = {
             "r": "reverse",
@@ -30,7 +23,7 @@ class User:
             "d": "draw2"
         }
 
-        if card == "w" or card == "w4":
+        if card == "w" or card == "wd":
             return color_fmt[card]
         elif len(card) == 2 and card[0] in color_fmt and (card[1] in number_fmt or card[1].isdigit()):
             return f"{color_fmt[card[0]]}_{number_fmt[card[1]] if not card[1].isdigit() else card[1]}"
@@ -69,7 +62,7 @@ class User:
                         'b': "blue",
                         'y': "yellow"
                     }
-                    user_color_choice = colors[input("Enter color (r/g/b/y):").strip()]
+                    user_color_choice = colors[input("Enter color (r/g/b/y): ").strip()]
                 tb.add(self.stack.pop(card_loc), color_choice=user_color_choice)
                 return success
             else:
@@ -141,22 +134,18 @@ class Table:
         card = self.stack[-1]
         if "_" not in card:
             return (False, "no action card", turn, direction)
-        
+
         card_action = card[card.index("_") + 1:]
         if card_action.isdigit():
             return (False, "no action card", turn, direction)
 
         if card_action in ["draw4", "draw2"]:
-            # nx: next user
-            nx = (turn + direction) % len(users)
+            next_user = (turn + direction) % len(users)
             num_draws = int(card_action[-1])
             for _ in range(num_draws):
-                users[nx].draw(target_deck, self)
-            msg = f"{users[nx].name} draws {num_draws}"
-            if not users[nx].is_bot:
-                msg += f" ({users[nx].troll_msg[users[nx].next_msg] if users[nx].next_msg < len(users[nx].troll_msg) else ''})"
-                users[nx].next_msg = users[nx].next_msg + 1 if users[nx].next_msg < len(users[nx].troll_msg) else users[nx].next_msg
-            return (True, msg, turn + direction, direction)
+                users[next_user].draw(target_deck, self)
+            message = f"{users[next_user].name} draws {num_draws}"
+            return (True, message, turn + direction, direction)
         elif card_action == "skip":
             return (True, f"{users[(turn + direction) % len(users)].name} is skipped", turn + direction, direction)
         elif card_action == "reverse":
@@ -182,4 +171,3 @@ for i in "red green blue yellow".split():
 
 applied_deck = [card for card in deck]
 random.shuffle(applied_deck)
-
